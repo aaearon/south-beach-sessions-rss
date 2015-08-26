@@ -1,5 +1,7 @@
 import json
+import os
 from feedgen.feed import FeedGenerator
+import sys
 
 TITLE = 'The Dan LeBatard Show with Stugotz: South Beach Sessions'
 LINK = 'http://espn.go.com/espnradio/story/_/id/11756027/south-beach-sessions'
@@ -54,4 +56,8 @@ def read_items(file=file):
 
 
 if __name__ == '__main__':
-    generate_feed('items.json')
+    fn = sys.argv[1]
+
+    if os.path.exists(fn):
+        generate_feed(fn)
+
