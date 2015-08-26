@@ -8,6 +8,7 @@ IMAGE_URL = 'http://a.espncdn.com/photo/2014/1106/radio_lebatardstugotz_576x324.
 CONTACT = {'name': 'Tim Schindler',
            'email': 'tim.schindler@gmail.com'}
 
+
 def generate_feed(file_name):
     fg = FeedGenerator()
     fg.load_extension('podcast', rss=True)
@@ -17,12 +18,12 @@ def generate_feed(file_name):
     fg.title(TITLE)
     fg.link(href=LINK)
     fg.description(DESCRIPTION)
-    #Optional
+    # Optional
     fg.language('en')
     fg.image(url=IMAGE_URL, title=TITLE, link=LINK)
     fg.ttl(720)
     fg.webMaster(CONTACT['name'])
-    #iTunes
+    # iTunes
     fg.podcast.itunes_author('Dan LeBatard')
     fg.podcast.itunes_category(itunes_category='Sports & Recreation', itunes_subcategory='Professional')
     fg.podcast.itunes_image(itunes_image=IMAGE_URL)
@@ -39,16 +40,18 @@ def generate_feed(file_name):
         fe.title(item['title'])
         fe.description(item['description'])
         fe.enclosure(item['link'], 0, 'audio/mpeg')
+        fe.pubdate(item['pubDate'])
 
     # Finish off the file
     fg.rss_str(pretty=True)
     fg.rss_file('podcast.xml')
 
-def read_items(file=file):
 
+def read_items(file=file):
     with open(file) as json_file:
         items = json.load(json_file)
     return items
+
 
 if __name__ == '__main__':
     generate_feed('items.json')
