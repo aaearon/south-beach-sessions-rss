@@ -37,7 +37,7 @@ def string_to_date_to_string(string):
         # January 01, 2015
         date = datetime.strptime(string, "%B %d, %Y")
 
-    tz = pytz.timezone("US/Eastern")
+    tz = pytz.timezone("UTC")
     return tz.localize(date).strftime("%Y-%m-%d %H:%M:%S %Z")
 
 
