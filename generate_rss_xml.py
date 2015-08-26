@@ -11,7 +11,7 @@ CONTACT = {'name': 'Tim Schindler',
            'email': 'tim.schindler@gmail.com'}
 
 
-def generate_feed(file_name):
+def generate_feed(input_file, output_file):
     fg = FeedGenerator()
     fg.load_extension('podcast', rss=True)
 
@@ -33,7 +33,7 @@ def generate_feed(file_name):
     fg.podcast.itunes_owner(name=CONTACT['name'], email=CONTACT['email'])
 
     # Add items
-    items = read_items(file_name)
+    items = read_items(input_file)
     for item in items:
         fe = fg.add_entry()
 
@@ -46,7 +46,7 @@ def generate_feed(file_name):
 
     # Finish off the file
     fg.rss_str(pretty=True)
-    fg.rss_file('podcast.xml')
+    fg.rss_file(output_file)
 
 
 def read_items(file=file):
@@ -56,8 +56,9 @@ def read_items(file=file):
 
 
 if __name__ == '__main__':
-    fn = sys.argv[1]
+    input_file = sys.argv[1]
+    output_file = sys.argv[2]
 
-    if os.path.exists(fn):
-        generate_feed(fn)
+    if os.path.exists(input_file):
+        generate_feed(input_file, output_file)
 
