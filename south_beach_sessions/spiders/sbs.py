@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import urllib2
 from scrapy import Selector, Spider, Request
 
 from south_beach_sessions.items import SouthBeachSessionLoader
@@ -13,7 +12,7 @@ class SbsSpider(Spider):
     )
 
     def parse(self, response):
-        for row in response.xpath('//*[@id="content"]/div[3]/div[1]/div[3]/div[2]/div/table//tr[position()>1]'):
+        for row in response.xpath('//*[@id="content"]/div[3]/div[1]/div[3]/div[2]/div/table//tr[contains(@class, "last")]'):
             date = 'td[1]/center/text()'
             guest = 'td[2]/center/text()'
             link = 'td[3]/center/a/@href'
@@ -28,14 +27,11 @@ class SbsSpider(Spider):
                           meta={'item': sbs.load_item()}, )
 
     def parse_session(self, response):
-        url = urllib2.unquote(response.url)
-
         sel = Selector(response)
         sbs = SouthBeachSessionLoader(item=response.meta['item'], selector=sel)
 
-        # sbs.add_xpath('title', '//*[@id="mem"]/div[3]/div[2]/h2/text()')
         sbs.add_xpath('description', '//*[@id="mem"]/div[3]/div[2]/p[1]/text()')
         sbs.add_xpath('link', '//*[@id="mem"]/div[3]/div[2]/p[2]/a/@href')
-        sbs.add_value('guid', url)
+        sbs.add_value('guid', response.url)
 
         yield sbs.load_item()
