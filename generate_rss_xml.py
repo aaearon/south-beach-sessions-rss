@@ -1,7 +1,9 @@
 import json
 import os
+import datetime
 from feedgen.feed import FeedGenerator
 import sys
+import pytz
 
 TITLE = 'The Dan LeBatard Show with Stugotz: South Beach Sessions'
 LINK = 'http://espn.go.com/espnradio/story/_/id/11756027/south-beach-sessions'
@@ -25,6 +27,9 @@ def generate_feed(input_file, output_file):
     fg.image(url=IMAGE_URL, title=TITLE, link=LINK)
     fg.ttl(720)
     fg.webMaster(CONTACT['name'])
+    now = datetime.datetime.now()
+    tz = pytz.timezone('Europe/Amsterdam')
+    fg.pubDate(tz.localize(now))
     # iTunes
     fg.podcast.itunes_author('Dan LeBatard')
     fg.podcast.itunes_category(itunes_category='Sports & Recreation', itunes_subcategory='Professional')
